@@ -1,10 +1,8 @@
 const express = require("express");
 const {
-  addAccount,
   getAllAccount,
   getAccount,
-  updateAccount,
-  deleteAccount,
+  getLogin,
 } = require("../controllers/loginController");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
@@ -15,6 +13,7 @@ router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 router.get("/account", getAllAccount);
 router.get("/account/:id", getAccount);
+router.get("/account/:email/:password", getLogin);
 // router.post("/login", addAccount);
 // router.put("/login/:id", updateAccount);
 // router.delete("/login/:id", deleteAccount);

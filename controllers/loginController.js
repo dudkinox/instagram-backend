@@ -3,6 +3,7 @@
 const firebase = require("../db");
 const Account = require("../models/login");
 const firestore = firebase.firestore();
+var md5 = require("md5");
 
 const addAccount = async (req, res, next) => {
   try {
@@ -54,6 +55,36 @@ const getAccount = async (req, res, next) => {
   }
 };
 
+const getLogin = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const password = req.params.password;
+    const hashPassword = md5(password);
+    const accounts = await firestore
+      .collection("account")
+      .where("email", "==", email)
+      .where("password", "==", hashPassword);
+    const fetchAccount = await accounts.get();
+    if (fetchAccount.empty) {
+      res.status(200).send({
+        id: "",
+        email: "",
+        password: "",
+        name: "",
+      });
+    } else {
+      return res.status(200).send({
+        id: fetchAccount.docs[0].id,
+        email: fetchAccount.docs[0].data().email,
+        password: fetchAccount.docs[0].data().password,
+        name: fetchAccount.docs[0].data().name,
+      });
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
 const updateAccount = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -82,4 +113,5 @@ module.exports = {
   getAccount,
   updateAccount,
   deleteAccount,
+  getLogin,
 };
