@@ -1,10 +1,10 @@
 class Account {
-  constructor(id, username, password, email, link) {
+  constructor(id, username, password, email, image) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.email = email;
-    this.link = link;
+    this.image = image;
   }
 }
 
