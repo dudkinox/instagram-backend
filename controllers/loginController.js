@@ -12,18 +12,6 @@ const postRegister = async (req, res, next) => {
     const folder = "profile";
     const filename = `${folder}/${Date.now()}`;
     const fileUpload = bucket.file(filename);
-    const dataImage = { image: filename.split("/")[1] };
-    const file = bucket.file(`profile/${req.params.id}`);
-    const link =
-      "https://firebasestorage.googleapis.com/v0" +
-      file.parent.baseUrl +
-      "/" +
-      file.parent.name +
-      file.baseUrl +
-      "/profile" +
-      "%2F" +
-      dataImage +
-      "?alt=media";
 
     const blobStream = fileUpload.createWriteStream({
       metadata: {
@@ -39,6 +27,17 @@ const postRegister = async (req, res, next) => {
     blobStream.on("finish", () => {
       const data = req.body;
       data.password = md5(data.password);
+      const file = bucket.file(`profile/${filename}`);
+      const link =
+        "https://firebasestorage.googleapis.com/v0" +
+        file.parent.baseUrl +
+        "/" +
+        file.parent.name +
+        file.baseUrl +
+        "/profile" +
+        "%2F" +
+        filename.split("/")[1] +
+        "?alt=media";
       data.image = link;
 
       // await firestore.collection("account").doc().set(data);
