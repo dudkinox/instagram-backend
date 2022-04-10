@@ -16,7 +16,7 @@ const addAccount = async (req, res, next) => {
 
 const getAllAccount = async (req, res, next) => {
   try {
-    const account = await firestore.collection("login");
+    const account = await firestore.collection("account");
     const data = await account.get();
     const AccountArray = [];
     if (data.empty) {

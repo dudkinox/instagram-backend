@@ -13,12 +13,11 @@ const router = express.Router();
 
 router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
-// login
-router.get("/login", getAllAccount);
-router.get("/login/:id", getAccount);
-router.post("/login", addAccount);
-router.put("/login/:id", updateAccount);
-router.delete("/login/:id", deleteAccount);
+router.get("/account", getAllAccount);
+// router.get("/login/:id", getAccount);
+// router.post("/login", addAccount);
+// router.put("/login/:id", updateAccount);
+// router.delete("/login/:id", deleteAccount);
 
 module.exports = {
   routes: router,
