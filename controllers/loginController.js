@@ -29,7 +29,7 @@ const getAllAccount = async (req, res, next) => {
           doc.data().username,
           doc.data().password,
           doc.data().email,
-          doc.data().link
+          doc.data().image
         );
         AccountArray.push(account);
       });
