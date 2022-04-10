@@ -5,13 +5,13 @@ const Account = require("../models/login");
 const firestore = firebase.firestore();
 var md5 = require("md5");
 
-const addAccount = async (req, res, next) => {
+const postRegister = async (req, res, next) => {
   try {
     const data = req.body;
-    await firestore.collection("login").doc().set(data);
-    res.send("เพิ่มบัญชีสำเร็จ");
+    await firestore.collection("account").doc().set(data);
+    return res.send("success");
   } catch (error) {
-    res.status(400).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
@@ -71,6 +71,7 @@ const getLogin = async (req, res) => {
         email: "",
         password: "",
         name: "",
+        image: "",
       });
     } else {
       return res.status(200).send({
@@ -78,6 +79,7 @@ const getLogin = async (req, res) => {
         email: fetchAccount.docs[0].data().email,
         password: fetchAccount.docs[0].data().password,
         name: fetchAccount.docs[0].data().name,
+        image: fetchAccount.docs[0].data().image,
       });
     }
   } catch (error) {
@@ -108,7 +110,7 @@ const deleteAccount = async (req, res, next) => {
 };
 
 module.exports = {
-  addAccount,
+  postRegister,
   getAllAccount,
   getAccount,
   updateAccount,

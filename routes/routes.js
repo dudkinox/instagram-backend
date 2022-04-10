@@ -3,6 +3,7 @@ const {
   getAllAccount,
   getAccount,
   getLogin,
+  postRegister,
 } = require("../controllers/loginController");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
@@ -14,7 +15,7 @@ router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 router.get("/account", getAllAccount);
 router.get("/account/:id", getAccount);
 router.get("/account/:email/:password", getLogin);
-// router.post("/login", addAccount);
+router.post("/login", postRegister);
 // router.put("/login/:id", updateAccount);
 // router.delete("/login/:id", deleteAccount);
 
