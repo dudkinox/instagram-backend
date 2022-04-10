@@ -8,6 +8,7 @@ var md5 = require("md5");
 const postRegister = async (req, res, next) => {
   try {
     const data = req.body;
+    data.password = md5(data.password);
     await firestore.collection("account").doc().set(data);
     return res.send("success");
   } catch (error) {
