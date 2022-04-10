@@ -1,4 +1,11 @@
 const express = require("express");
+const Multer = require("multer");
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
 const {
   getAllAccount,
   getAccount,
@@ -15,7 +22,7 @@ router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 router.get("/account", getAllAccount);
 router.get("/account/:id", getAccount);
 router.get("/account/:email/:password", getLogin);
-router.post("/account", postRegister);
+router.post("/account", multer.single("img"), postRegister);
 // router.put("/login/:id", updateAccount);
 // router.delete("/login/:id", deleteAccount);
 
