@@ -42,7 +42,7 @@ const getAllAccount = async (req, res, next) => {
 const getAccount = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const Account = await firestore.collection("login").doc(id);
+    const Account = await firestore.collection("account").doc(id);
     const data = await Account.get();
     if (!data.exists) {
       res.status(404).send("หาไม่เจอ");
