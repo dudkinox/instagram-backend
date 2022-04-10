@@ -15,7 +15,7 @@ router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 router.get("/account", getAllAccount);
 router.get("/account/:id", getAccount);
 router.get("/account/:email/:password", getLogin);
-router.post("/login", postRegister);
+router.post("/account", postRegister);
 // router.put("/login/:id", updateAccount);
 // router.delete("/login/:id", deleteAccount);
 
