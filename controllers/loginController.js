@@ -24,7 +24,7 @@ const postRegister = async (req, res, next) => {
       res.status(405).json(err);
     });
 
-    blobStream.on("finish", () => {
+    blobStream.on("finish", async () => {
       const data = req.body;
       data.password = md5(data.password);
       const file = bucket.file(`profile/${filename}`);
@@ -40,10 +40,9 @@ const postRegister = async (req, res, next) => {
         "?alt=media";
       data.image = link;
 
-      // await firestore.collection("account").doc().set(data);
+      await firestore.collection("account").doc().set(data);
 
-      // return res.status(200).send("success");
-      return res.status(200).send(data);
+      return res.status(200).send("success");
     });
 
     blobStream.end(req.file.buffer);
