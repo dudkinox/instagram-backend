@@ -127,11 +127,11 @@ const updateAccount = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const Account = await firestore.collection("login").doc(id);
+    const Account = await firestore.collection("account").doc(id);
     await Account.update(data);
-    res.send("แก้ไขข้อมูลแล้ว");
+    return res.status(200).send("success");
   } catch (error) {
-    res.status(400).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
