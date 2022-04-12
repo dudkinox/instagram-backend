@@ -2,7 +2,6 @@
 
 const firebase = require("../db");
 const Account = require("../models/login");
-const ProfileModel = require("../models/profile");
 const firestore = firebase.firestore();
 var md5 = require("md5");
 const storage = require("../storage");
