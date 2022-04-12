@@ -2,10 +2,62 @@
 
 const firebase = require("../db");
 const Account = require("../models/login");
+const ProfileModel = require("../models/profile");
 const firestore = firebase.firestore();
 var md5 = require("md5");
 const storage = require("../storage");
 const bucket = storage.bucket();
+
+const updateImageAccount = async (req, res, next) => {
+  try {
+    const folder = "profile";
+    const filename = `${folder}/${Date.now()}`;
+    const fileUpload = bucket.file(filename);
+
+    const blobStream = fileUpload.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype,
+        name: filename,
+      },
+    });
+
+    blobStream.on("error", (err) => {
+      res.status(405).json(err);
+    });
+
+    blobStream.on("finish", async () => {
+      const id = req.params.id;
+      const file = bucket.file(`profile/${filename}`);
+      const link =
+        "https://firebasestorage.googleapis.com/v0" +
+        file.parent.baseUrl +
+        "/" +
+        file.parent.name +
+        file.baseUrl +
+        "/profile" +
+        "%2F" +
+        filename.split("/")[1] +
+        "?alt=media";
+
+      const Accounts = await firestore.collection("account").doc(id);
+      const data = await Accounts.get();
+      const result = {
+        name: data.data().name,
+        password: data.data().password,
+        email: data.data().email,
+        image: link,
+      };
+
+      await Accounts.update(result);
+
+      res.status(200).send("success");
+    });
+
+    blobStream.end(req.file.buffer);
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
 
 const postRegister = async (req, res, next) => {
   try {
@@ -152,4 +204,5 @@ module.exports = {
   updateAccount,
   deleteAccount,
   getLogin,
+  updateImageAccount,
 };
