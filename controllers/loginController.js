@@ -113,7 +113,7 @@ const getAllAccount = async (req, res, next) => {
       data.forEach((doc) => {
         const account = new Account(
           doc.id,
-          doc.data().username,
+          doc.data().name,
           doc.data().password,
           doc.data().email,
           doc.data().image
