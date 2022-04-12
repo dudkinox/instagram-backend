@@ -1,7 +1,7 @@
 class Account {
-  constructor(id, username, password, email, image) {
+  constructor(id, name, password, email, image) {
     this.id = id;
-    this.username = username;
+    this.name = name;
     this.password = password;
     this.email = email;
     this.image = image;
