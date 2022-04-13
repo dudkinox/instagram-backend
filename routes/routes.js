@@ -14,6 +14,7 @@ const {
   updateAccount,
   updateImageAccount,
 } = require("../controllers/loginController");
+const { addPost } = require("../controllers/postController");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
 
@@ -21,6 +22,7 @@ const router = express.Router();
 
 router.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
+// account
 router.get("/account", getAllAccount);
 router.get("/account/:id", getAccount);
 router.get("/account/:email/:password", getLogin);
@@ -31,7 +33,9 @@ router.put(
   multer.single("img"),
   updateImageAccount
 );
-// router.delete("/login/:id", deleteAccount);
+
+// post instagram
+router.post("/post-feed/:id", multer.single("img"), addPost);
 
 module.exports = {
   routes: router,
