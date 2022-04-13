@@ -14,7 +14,11 @@ const {
   updateAccount,
   updateImageAccount,
 } = require("../controllers/loginController");
-const { addPost } = require("../controllers/postController");
+const {
+  addPost,
+  getAllPostByID,
+  getAllFeed,
+} = require("../controllers/postController");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
 
@@ -35,6 +39,8 @@ router.put(
 );
 
 // post instagram
+router.get("/post-feed/:id", getAllPostByID);
+router.get("/feed/all", getAllFeed);
 router.post("/post-feed/:id", multer.single("img"), addPost);
 
 module.exports = {
