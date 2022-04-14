@@ -19,6 +19,8 @@ const {
   getAllPostByID,
   getAllFeed,
 } = require("../controllers/postController");
+const { LikePost } = require("../controllers/likeController");
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
 
@@ -42,6 +44,9 @@ router.put(
 router.get("/post-feed/:id", getAllPostByID);
 router.get("/feed/all", getAllFeed);
 router.post("/post-feed/:id", multer.single("img"), addPost);
+
+// like this post
+router.patch("/like/:id/:no", LikePost);
 
 module.exports = {
   routes: router,

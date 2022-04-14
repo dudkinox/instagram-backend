@@ -1,8 +1,6 @@
 "use strict";
 
-const e = require("express");
 const firebase = require("../db");
-const PostModel = require("../models/post");
 const firestore = firebase.firestore();
 const storage = require("../storage");
 const bucket = storage.bucket();
