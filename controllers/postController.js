@@ -54,18 +54,13 @@ const addPost = async (req, res, next) => {
       if (check.exists) {
         const result = check.data();
         result.list.push({
-          list: [
-            {
-              postNo: check.data().list.length + 1,
-              image: link,
-              createAt:
-                formatDate[2] + "/" + formatDate[1] + "/" + formatDate[0],
-              createTime: classified[1],
-              caption: data.caption,
-              countComment: 0,
-              countLike: 0,
-            },
-          ],
+          postNo: check.data().list.length + 1,
+          image: link,
+          createAt: formatDate[2] + "/" + formatDate[1] + "/" + formatDate[0],
+          createTime: classified[1],
+          caption: data.caption,
+          countComment: 0,
+          countLike: 0,
         });
 
         await searchFirebase.update(result);
@@ -116,17 +111,36 @@ const getAllFeed = async (req, res) => {
   try {
     const post = await firestore.collection("post");
     const data = await post.get();
-    const PostArray = [];
     if (data.empty) {
       res.status(404).send("not fond post");
     } else {
-      data.forEach((doc) => {
-        const postFeed = new PostModel(doc.id, doc.data().list);
-        PostArray.push(postFeed);
-      });
-      console.log(PostArray);
+      const FeedArray = [];
 
-      return res.status(200).send(PostArray);
+      data.forEach((doc) => {
+        const postFeed = {
+          id: doc.id,
+          list: doc.data().list,
+        };
+        FeedArray.push(postFeed);
+      });
+
+      const result = [];
+      for (var i = 0; i < FeedArray.length; i++) {
+        const account = await firestore
+          .collection("account")
+          .doc(FeedArray[i].id);
+        const searchAccount = await account.get();
+
+        result.push({
+          id: FeedArray[i].id,
+          name: searchAccount.data().name,
+          email: searchAccount.data().email,
+          image: searchAccount.data().image,
+          list: FeedArray[i].list,
+        });
+      }
+
+      return res.status(200).send(result);
     }
   } catch (error) {
     return res.status(400).send(error.message);

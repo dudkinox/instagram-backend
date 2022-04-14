@@ -1,6 +1,8 @@
 class PostModel {
-  constructor(id, list) {
+  constructor(id, name, email, list) {
     this.id = id;
+    this.name = name;
+    this.email = email;
     this.list = list;
   }
 }
