@@ -92,6 +92,29 @@ const LikePost = async (req, res) => {
   }
 };
 
+const getLike = async (req, res) => {
+  try {
+    const name = req.body.name;
+
+    const like = await firestore.collection("like");
+    const data = await like.get();
+    const LikeArray = [];
+    if (data.empty) {
+      return res.status(404).send("not fond");
+    } else {
+      data.forEach((doc) => {
+        const likePost = new LikeModel(doc.id, doc.data().list);
+        LikeArray.push(likePost);
+      });
+
+      return res.status(200).send(LikeArray);
+    }
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
 module.exports = {
   LikePost,
+  getLike,
 };

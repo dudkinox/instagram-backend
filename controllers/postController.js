@@ -107,6 +107,10 @@ const getAllPostByID = async (req, res) => {
 
 const getAllFeed = async (req, res) => {
   try {
+    const id = req.params.id;
+    const searchAccount = await firestore.collection("account").doc(id);
+    const accountName = await searchAccount.get();
+
     const post = await firestore.collection("post");
     const data = await post.get();
     if (data.empty) {
@@ -123,21 +127,52 @@ const getAllFeed = async (req, res) => {
       });
 
       const result = [];
+
       for (var i = 0; i < FeedArray.length; i++) {
         const account = await firestore
           .collection("account")
           .doc(FeedArray[i].id);
         const searchAccount = await account.get();
 
+        const likeCheck = await firestore
+          .collection("like")
+          .doc(FeedArray[i].id);
+        const searchLike = await likeCheck.get();
+
+        const ListArray = [];
+
+        for (var k = 0; k < FeedArray[i].list.length; k++) {
+          if (
+            typeof searchLike.data().list[FeedArray[i].list[k].postNo - 1] ===
+            "undefined"
+          ) {
+            break;
+          }
+          const feed = {
+            postNo: FeedArray[i].list[k].postNo,
+            image: FeedArray[i].list[k].image,
+            caption: FeedArray[i].list[k].caption,
+            createAt: FeedArray[i].list[k].createAt,
+            createTime: FeedArray[i].list[k].createTime,
+            countComment: FeedArray[i].list[k].countComment,
+            countLike: FeedArray[i].list[k].countLike,
+            like:
+              searchLike.data().list[FeedArray[i].list[k].postNo - 1].name ===
+              accountName.data().name
+                ? true
+                : false,
+          };
+          ListArray.push(feed);
+        }
+
         result.push({
           id: FeedArray[i].id,
           name: searchAccount.data().name,
           email: searchAccount.data().email,
           image: searchAccount.data().image,
-          list: FeedArray[i].list,
+          list: ListArray,
         });
       }
-
       return res.status(200).send(result);
     }
   } catch (error) {
