@@ -142,12 +142,6 @@ const getAllFeed = async (req, res) => {
         const ListArray = [];
 
         for (var k = 0; k < FeedArray[i].list.length; k++) {
-          if (
-            typeof searchLike.data().list[FeedArray[i].list[k].postNo - 1] ===
-            "undefined"
-          ) {
-            break;
-          }
           const feed = {
             postNo: FeedArray[i].list[k].postNo,
             image: FeedArray[i].list[k].image,
@@ -157,8 +151,11 @@ const getAllFeed = async (req, res) => {
             countComment: FeedArray[i].list[k].countComment,
             countLike: FeedArray[i].list[k].countLike,
             like:
-              searchLike.data().list[FeedArray[i].list[k].postNo - 1].name ===
-              accountName.data().name
+              typeof searchLike.data().list[FeedArray[i].list[k].postNo - 1] ===
+              "undefined"
+                ? false
+                : searchLike.data().list[FeedArray[i].list[k].postNo - 1]
+                    .name === accountName.data().name
                 ? true
                 : false,
           };
