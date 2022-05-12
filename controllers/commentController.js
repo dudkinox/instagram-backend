@@ -72,10 +72,9 @@ const addComment = async (req, res) => {
 
 const getCommentAll = async (req, res) => {
   try {
-    const response = await firestore.collection("comment").get();
-    const data = response.docs.map((item) => {
-      return { id: item.id, ...item.data() };
-    });
+    const id = req.params.id;
+    const response = await firestore.collection("comment").doc(id).get();
+    const data = response.data();
     return res.status(200).send(data);
   } catch (error) {
     return res.status(400).send(" " + error.message);

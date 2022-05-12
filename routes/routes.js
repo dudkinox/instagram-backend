@@ -54,7 +54,7 @@ router.patch("/like/:id/:no", LikePost);
 router.get("/like", getLike);
 
 // comment on this post
-router.get("/comment", getCommentAll);
+router.get("/comment/:id", getCommentAll);
 router.post("/comment/:id", addComment);
 
 module.exports = {
