@@ -20,7 +20,10 @@ const {
   getAllFeed,
 } = require("../controllers/postController");
 const { LikePost, getLike } = require("../controllers/likeController");
-const { addComment } = require("../controllers/commentController");
+const {
+  addComment,
+  getCommentAll,
+} = require("../controllers/commentController");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("../swagger");
@@ -51,6 +54,7 @@ router.patch("/like/:id/:no", LikePost);
 router.get("/like", getLike);
 
 // comment on this post
+router.get("/comment", getCommentAll);
 router.post("/comment/:id", addComment);
 
 module.exports = {

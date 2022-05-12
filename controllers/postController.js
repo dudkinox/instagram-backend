@@ -79,6 +79,8 @@ const addPost = async (req, res, next) => {
         };
 
         await firestore.collection("post").doc(id).set(result);
+
+        await firestore.collection("like").doc(id).set({ list: [] });
       }
 
       return res.status(200).send("success");
